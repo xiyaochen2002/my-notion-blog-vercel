@@ -1,4 +1,10 @@
-import { getPostBySlug, getPostBlocks, getPublishedPosts } from "../../../lib/notion";
+import Link from "next/link";
+import {
+  getPostBySlug,
+  getPostBlocks,
+  getPublishedPosts,
+} from "../../../lib/notion";
+import ProtectedPostGate from "../../../components/ProtectedPostGate";
 
 export const revalidate = 60;
 
@@ -9,32 +15,108 @@ export async function generateStaticParams() {
     .map((post: any) => ({ slug: post.slug }));
 }
 
+function getText(block: any) {
+  const value = block[block.type];
+  if (!value?.rich_text) return "";
+  return value.rich_text.map((t: any) => t.plain_text).join("");
+}
+
+function renderRichText(richText: any[] = []) {
+  return richText.map((item: any, index: number) => {
+    const text = item.plain_text;
+    const annotations = item.annotations || {};
+    let node: React.ReactNode = text;
+
+    if (item.href) {
+      node = (
+        <a href={item.href} target="_blank" rel="noreferrer">
+          {node}
+        </a>
+      );
+    }
+
+    if (annotations.code) node = <code>{node}</code>;
+    if (annotations.bold) node = <strong>{node}</strong>;
+    if (annotations.italic) node = <em>{node}</em>;
+    if (annotations.strikethrough) node = <s>{node}</s>;
+    if (annotations.underline) node = <u>{node}</u>;
+
+    return <span key={index}>{node}</span>;
+  });
+}
+
 function renderBlock(block: any) {
   const type = block.type;
   const value = block[type];
 
   if (!value) return null;
 
-  const text = (value.rich_text || []).map((t: any) => t.plain_text).join("");
-
   switch (type) {
     case "heading_1":
-      return <h1>{text}</h1>;
+      return <h1>{renderRichText(value.rich_text)}</h1>;
     case "heading_2":
-      return <h2>{text}</h2>;
+      return <h2>{renderRichText(value.rich_text)}</h2>;
     case "heading_3":
-      return <h3>{text}</h3>;
+      return <h3>{renderRichText(value.rich_text)}</h3>;
     case "paragraph":
-      return <p>{text}</p>;
+      return <p>{renderRichText(value.rich_text)}</p>;
     case "quote":
-      return <blockquote>{text}</blockquote>;
+      return <blockquote>{renderRichText(value.rich_text)}</blockquote>;
     case "bulleted_list_item":
-      return <li>{text}</li>;
+      return (
+        <ul className="postListBlock">
+          <li>{renderRichText(value.rich_text)}</li>
+        </ul>
+      );
     case "numbered_list_item":
-      return <li>{text}</li>;
+      return (
+        <ol className="postListBlock">
+          <li>{renderRichText(value.rich_text)}</li>
+        </ol>
+      );
+    case "code":
+      return (
+        <pre className="codeBlock">
+          <code>{getText(block)}</code>
+        </pre>
+      );
+    case "divider":
+      return <hr className="postDivider" />;
+    case "image": {
+      const src =
+        value.type === "external" ? value.external?.url : value.file?.url;
+
+      const caption =
+        value.caption?.map((t: any) => t.plain_text).join("") || "";
+
+      if (!src) return null;
+
+      return (
+        <figure className="postFigure">
+          <img src={src} alt={caption || "Post image"} className="postImage" />
+          {caption ? <figcaption>{caption}</figcaption> : null}
+        </figure>
+      );
+    }
     default:
       return null;
   }
+}
+
+function PostBody({ blocks }: { blocks: any[] }) {
+  if (blocks.length === 0) {
+    return <p className="postNoContent">No content yet.</p>;
+  }
+
+  return (
+    <>
+      {blocks.map((block: any) => (
+        <div key={block.id} className={`postBlock postBlock-${block.type}`}>
+          {renderBlock(block)}
+        </div>
+      ))}
+    </>
+  );
 }
 
 export default async function PostPage({
@@ -47,31 +129,77 @@ export default async function PostPage({
 
   if (!post) {
     return (
-      <main className="container articlePage">
-        <p>文章不存在。</p>
+      <main className="postShell">
+        <section className="postEmpty">
+          <p>Nothing found here.</p>
+          <Link href="/" className="backLink">
+            ← Back Home
+          </Link>
+        </section>
       </main>
     );
   }
 
   const blocks = await getPostBlocks(post.id);
 
-  return (
-    <main className="container articlePage">
-      <a href="/" className="backLink">← 返回首页</a>
+  const content = (
+    <article className="postCard">
+      <header className="postHeader">
+        <p className="postEyebrow">Writing</p>
 
-      <article className="articleCard">
-        <p className="eyebrow">{post.category || "文章"}</p>
-        <h1>{post.title}</h1>
-        {post.date ? <p className="meta">{post.date}</p> : null}
-        {post.cover ? <img className="articleCover" src={post.cover} alt={post.title} /> : null}
-        {post.summary ? <p className="summary">{post.summary}</p> : null}
+        <h1 className="postTitle">{post.title}</h1>
 
-        <div className="content">
-          {blocks.map((block: any) => (
-            <div key={block.id}>{renderBlock(block)}</div>
-          ))}
+        <div className="postMetaRow">
+          {post.date ? <span>{post.date}</span> : null}
+          {post.category ? <span>· {post.category}</span> : null}
         </div>
-      </article>
+
+        {post.summary ? (
+          <p className="postSummary">{post.summary}</p>
+        ) : null}
+
+        {post.tags?.length ? (
+          <div className="postTags">
+            {post.tags.map((tag: string) => (
+              <span key={tag} className="postTag">
+                {tag}
+              </span>
+            ))}
+          </div>
+        ) : null}
+
+        {post.cover ? (
+          <img className="postCover" src={post.cover} alt={post.title} />
+        ) : null}
+      </header>
+
+      <section className="postContent">
+        <PostBody blocks={blocks} />
+      </section>
+    </article>
+  );
+
+  return (
+    <main className="postShell">
+      <section className="postTopbar">
+        <Link href="/" className="backLink">
+          ← Back Home
+        </Link>
+
+        <nav className="postMiniNav">
+          <Link href="/blog">Blog</Link>
+          <Link href="/thoughts">Thoughts</Link>
+          <Link href="/about">About</Link>
+          <Link href="/travel">Travel</Link>
+          <Link href="/notes">Notes</Link>
+        </nav>
+      </section>
+
+      {post.protected ? (
+        <ProtectedPostGate slug={slug}>{content}</ProtectedPostGate>
+      ) : (
+        content
+      )}
     </main>
   );
 }
