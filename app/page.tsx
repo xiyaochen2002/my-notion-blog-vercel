@@ -1,63 +1,72 @@
 import Link from "next/link";
-import { getPublishedPosts } from "../lib/notion";
+import { getPostsBySection } from "../lib/notion";
+import LandingCover from "../components/LandingCover";
 
 export const revalidate = 60;
 
 export default async function HomePage() {
-  const posts = await getPublishedPosts();
+  const posts = await getPostsBySection("Blog");
+  const latestPosts = posts.slice(0, 3);
 
   return (
-    <main className="container">
-      <nav className="nav">
-        <div className="brand">Xiyao's Blog</div>
-        <div className="navLinks">
-          <a href="#posts">文章</a>
-          <a href="#about">关于</a>
-        </div>
-      </nav>
+    <main className="homePage">
+      <LandingCover />
 
-      <section className="hero">
-        <p className="eyebrow">Notion 驱动博客</p>
-        <h1>用 Notion 写作，用自己的域名展示</h1>
-        <p className="heroText">
-          你以后只需要在 Notion 里写内容。这个网站会自动读取已发布文章并展示出来。
-        </p>
-      </section>
+      <section className="sectionPage homeContentWrap">
+        <section className="sectionHero">
+          <p className="sectionEyebrow">Latest Writing</p>
+          <h1>Recent Blog Posts</h1>
+          <p className="sectionSubtitle">
+            A small selection of recent writing from the Blog section.
+          </p>
+        </section>
 
-      <section id="posts">
-        <div className="sectionHeader">
-          <h2>最新文章</h2>
-          <span>{posts.length} 篇</span>
-        </div>
+        <section className="sectionContent">
+          {latestPosts.length === 0 ? (
+            <div className="emptyState">
+              <h3>No blog posts yet.</h3>
+              <p>Add posts in Notion with Section = Blog and Published checked.</p>
+            </div>
+          ) : (
+            <div className="sectionGrid">
+              {latestPosts.map((post: any) => (
+                <article key={post.id} className="sectionCard">
+                  {post.cover ? (
+                    <img
+                      src={post.cover}
+                      alt={post.title}
+                      className="sectionCardCover"
+                    />
+                  ) : null}
 
-        <div className="postGrid">
-          {posts.map((post: any) => (
-            <article key={post.id} className="card">
-              {post.cover ? (
-                <img className="cover" src={post.cover} alt={post.title} />
-              ) : null}
+                  <div className="sectionMeta">
+                    <span>{post.date || "No date"}</span>
+                    {post.category ? <span> · {post.category}</span> : null}
+                  </div>
 
-              <div className="meta">
-                <span>{post.date || "未设置日期"}</span>
-                {post.category ? <span> · {post.category}</span> : null}
-              </div>
+                  <h2>{post.title}</h2>
+                  <p>{post.summary || "No summary yet."}</p>
 
-              <h3>{post.title}</h3>
-              <p>{post.summary || "暂无摘要"}</p>
+                  <div className="sectionTags">
+                    {(post.tags || []).map((tag: string) => (
+                      <span key={tag} className="sectionTag">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
 
-              <Link className="button" href={`/posts/${post.slug}`}>
-                阅读文章
-              </Link>
-            </article>
-          ))}
-        </div>
-      </section>
+                  <Link href={`/posts/${post.slug}`} className="sectionLink">
+                    Read More
+                  </Link>
+                </article>
+              ))}
+            </div>
+          )}
 
-      <section id="about" className="setupBox">
-        <h2>使用方式</h2>
-        <p>
-          你在 Notion 数据库里新增文章，并勾选 <code>Published</code>，网站就会自动读取。
-        </p>
+          <div className="homeMoreLink">
+            <Link href="/blog">View all blog posts →</Link>
+          </div>
+        </section>
       </section>
     </main>
   );

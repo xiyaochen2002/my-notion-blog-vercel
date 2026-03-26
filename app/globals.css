@@ -190,3 +190,356 @@ code {
     align-items: flex-start;
   }
 }
+.homePage {
+  min-height: 100vh;
+}
+
+.landingCover {
+  position: relative;
+  min-height: 100vh;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.04), transparent 30%),
+    linear-gradient(180deg, #050607 0%, #030304 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landingGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px);
+  background-size: 52px 52px;
+  opacity: 0.14;
+}
+
+.landingGlow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(255,255,255,0.06), transparent 28%);
+  filter: blur(30px);
+}
+
+.landingInner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  width: min(1000px, calc(100% - 2rem));
+  padding: 2rem 1rem 4rem;
+}
+
+.landingAvatarWrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+
+.landingAvatar {
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255,255,255,0.75);
+  box-shadow:
+    0 0 12px rgba(255,255,255,0.2),
+    0 0 30px rgba(255,255,255,0.08);
+}
+
+.landingTitle {
+  font-size: clamp(3rem, 8vw, 5.4rem);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  color: rgba(255,255,255,0.96);
+  margin: 0;
+  text-shadow:
+    0 0 10px rgba(255,255,255,0.24),
+    0 0 26px rgba(255,255,255,0.08);
+}
+
+.landingSubtitle {
+  margin-top: 1rem;
+  color: rgba(255,255,255,0.62);
+  font-size: clamp(1rem, 2vw, 1.6rem);
+  letter-spacing: 0.12em;
+}
+
+.landingNav {
+  margin-top: 4.5rem;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(90px, 1fr));
+  gap: 1rem;
+  justify-content: center;
+}
+
+.landingNavItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+  color: rgba(255,255,255,0.78);
+  padding: 0.8rem 0.5rem;
+  border-radius: 18px;
+  transition: all 0.2s ease;
+}
+
+.landingNavItem:hover {
+  background: rgba(255,255,255,0.06);
+  color: white;
+  transform: translateY(-2px);
+}
+.landingNavItem:hover .landingIcon {
+  background: rgba(255,255,255,0.08);
+  color: white;
+  border-color: rgba(255,255,255,0.22);
+}
+
+.landingIcon {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.035);
+  color: rgba(255,255,255,0.86);
+  box-shadow:
+    0 0 18px rgba(255,255,255,0.04),
+    inset 0 0 0 1px rgba(255,255,255,0.02);
+  transition: all 0.25s ease;
+}
+
+.afterCover {
+  padding: 2rem;
+}
+
+@media (max-width: 900px) {
+  .landingNav {
+    grid-template-columns: repeat(3, minmax(90px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .landingNav {
+    grid-template-columns: repeat(2, minmax(90px, 1fr));
+  }
+
+  .afterCover {
+    padding: 1rem;
+  }
+}.pageIntro {
+  color: var(--muted);
+  line-height: 1.8;
+  margin-top: -0.2rem;
+  margin-bottom: 1.2rem;
+}
+.sectionPage {
+  min-height: 100vh;
+  padding: 3rem 1.25rem 4rem;
+  background:
+    radial-gradient(circle at top left, rgba(199, 176, 154, 0.12), transparent 22%),
+    linear-gradient(180deg, #f8f4ef 0%, #f2ebe4 100%);
+}
+
+.sectionHero {
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+  padding: 2.6rem 2rem;
+  border-radius: 32px;
+  background: rgba(255, 252, 248, 0.78);
+  border: 1px solid rgba(120, 104, 91, 0.14);
+  box-shadow: 0 20px 45px rgba(80, 60, 40, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.sectionEyebrow {
+  margin: 0 0 0.8rem;
+  color: #8a6a54;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.sectionHero h1 {
+  margin: 0;
+  font-size: clamp(2.6rem, 7vw, 5rem);
+  line-height: 1.08;
+  color: #2f2a26;
+}
+
+.sectionSubtitle {
+  margin-top: 1rem;
+  max-width: 42rem;
+  color: #7b6f66;
+  font-size: 1.05rem;
+  line-height: 1.9;
+}
+
+.sectionContent,
+.aboutCard {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.sectionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.sectionCard,
+.aboutCard {
+  background: rgba(255, 252, 248, 0.86);
+  border: 1px solid rgba(120, 104, 91, 0.14);
+  border-radius: 28px;
+  box-shadow: 0 20px 45px rgba(80, 60, 40, 0.08);
+  overflow: hidden;
+}
+
+.sectionCard {
+  padding: 1.2rem;
+}
+
+.sectionCardCover {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 20px;
+  margin-bottom: 1rem;
+}
+
+.sectionMeta {
+  color: #8a7b70;
+  font-size: 0.92rem;
+  margin-bottom: 0.6rem;
+}
+
+.sectionCard h2 {
+  margin: 0.2rem 0 0.65rem;
+  font-size: 1.55rem;
+  color: #2f2a26;
+}
+
+.sectionCard p {
+  color: #5b514a;
+  line-height: 1.85;
+}
+
+.sectionTags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 1rem 0 0.85rem;
+}
+
+.sectionTag {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: #efe4d8;
+  color: #8a6a54;
+  font-size: 0.84rem;
+}
+
+.sectionLink {
+  display: inline-block;
+  margin-top: 0.3rem;
+  color: #8a6a54;
+  font-weight: 700;
+}
+
+.sectionLink:hover {
+  opacity: 0.78;
+}
+
+.aboutCard {
+  padding: 2rem;
+}
+
+.aboutCard .content p,
+.aboutCard .content li,
+.aboutCard .content blockquote {
+  line-height: 1.95;
+  color: #4f453f;
+  font-size: 1.04rem;
+}
+
+.aboutCard .content h1,
+.aboutCard .content h2,
+.aboutCard .content h3 {
+  color: #2f2a26;
+}
+
+.aboutCard .content blockquote {
+  border-left: 4px solid #d3b9a3;
+  padding-left: 1rem;
+  color: #6c5a4f;
+}
+
+.emptyState {
+  padding: 2rem;
+  border-radius: 24px;
+  background: rgba(255, 252, 248, 0.82);
+  border: 1px solid rgba(120, 104, 91, 0.14);
+  color: #7b6f66;
+}
+
+@media (max-width: 900px) {
+  .sectionGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHero,
+  .aboutCard {
+    padding: 1.4rem;
+  }
+
+  .sectionCardCover {
+    height: 210px;
+  }
+}
+.pageTopBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.backHome {
+  color: #8a6a54;
+  font-weight: 700;
+}
+
+.pageMiniNav {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.pageMiniNav a {
+  color: #7b6f66;
+  font-size: 0.95rem;
+}
+
+.pageMiniNav a:hover,
+.backHome:hover {
+  opacity: 0.75;
+}
+
+.homeContentWrap {
+  padding-top: 2rem;
+}
+
+.homeMoreLink {
+  margin-top: 1.5rem;
+}
+
+.homeMoreLink a {
+  color: #8a6a54;
+  font-weight: 700;
+}
