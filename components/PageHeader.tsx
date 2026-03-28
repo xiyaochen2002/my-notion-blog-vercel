@@ -23,7 +23,7 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
       </div>
 
       <p className="sectionEyebrow">Xiyao Chen</p>
-      <h1>{title}</h1>
+      <h1 className="sectionTitle">{title}</h1>
       {subtitle ? <p className="sectionSubtitle">{subtitle}</p> : null}
     </section>
   );
