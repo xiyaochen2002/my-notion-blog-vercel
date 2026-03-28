@@ -6,7 +6,6 @@ export const revalidate = 60;
 function renderBlock(block: any) {
   const type = block.type;
   const value = block[type];
-
   if (!value) return null;
 
   const text = (value.rich_text || []).map((t: any) => t.plain_text).join("");
@@ -24,32 +23,30 @@ function renderBlock(block: any) {
       return <blockquote>{text}</blockquote>;
     case "bulleted_list_item":
       return <li>{text}</li>;
-    case "numbered_list_item":
-      return <li>{text}</li>;
     default:
       return null;
   }
 }
 
-export default async function AboutPage() {
-  const posts = await getPostsBySection("About");
-  const aboutPost = posts[0];
+export default async function ResumePage() {
+  const posts = await getPostsBySection("Resume");
+  const resumePost = posts[0];
 
-  if (!aboutPost) {
+  if (!resumePost) {
     return (
       <main className="sectionPage">
-        <PageHeader title="About" subtitle="No about content yet." />
+        <PageHeader title="Resume" subtitle="No content yet." />
       </main>
     );
   }
 
-  const blocks = await getPostBlocks(aboutPost.id);
+  const blocks = await getPostBlocks(resumePost.id);
 
   return (
     <main className="sectionPage">
       <PageHeader
-        title={aboutPost.title}
-        subtitle={aboutPost.summary || ""}
+        title={resumePost.title || "Resume"}
+        subtitle={resumePost.summary || ""}
       />
 
       <section className="aboutCard">

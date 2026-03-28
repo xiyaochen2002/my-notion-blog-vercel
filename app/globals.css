@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap');
+
 :root {
   --bg: #f8fafc;
   --text: #0f172a;
@@ -861,4 +863,54 @@ code {
 .postPasswordError {
   margin-top: 0.9rem;
   color: #b14f4f;
+}
+
+.landingFooter {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+
+.landingSignature {
+  font-family: "Brush Script MT", "Segoe Script", cursive;
+  font-size: 3.5rem;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.landingContact {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.landingContact a {
+  color: rgba(255,255,255,0.65);
+  transition: all 0.2s ease;
+}
+
+.landingContact a:hover {
+  color: white;
+  transform: translateY(-2px);
+}
+.landingSubtitle {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.2rem;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tagMath  { color: #a5b4fc; border-color: #3730a3; background: #1e1b4b; }
+  .tagCode  { color: #67e8f9; border-color: #164e63; background: #083344; }
+  .tagLife  { color: #86efac; border-color: #14532d; background: #052e16; }
+}
+
+.subtitleDot {
+  opacity: 0.3;
+  font-size: 0.9rem;
 }

@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Xiyao's Blog",
-  description: "A custom blog powered by Notion",
+  title: "Xiyao Chen",
+  description: "Mathematics · Programming · Life",
 };
 
 export default function RootLayout({ children }) {

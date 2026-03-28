@@ -188,8 +188,8 @@ export default async function PostPage({
 
         <nav className="postMiniNav">
           <Link href="/blog">Blog</Link>
-          <Link href="/thoughts">Thoughts</Link>
-          <Link href="/about">About</Link>
+          <Link href="/projects">Projects</Link>
+          <Link href="/resume">Resume</Link>
           <Link href="/travel">Travel</Link>
           <Link href="/notes">Notes</Link>
         </nav>
