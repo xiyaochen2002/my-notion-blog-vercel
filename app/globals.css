@@ -975,3 +975,59 @@ code {
 .notionColumn {
   flex: 1;
 }
+
+/* 封面大图 */
+.postCoverHero {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+  margin-bottom: 0;
+}
+
+.postCoverImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.postCoverOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.2) 100%);
+}
+
+.postIconRow {
+  display: flex;
+  align-items: flex-end;
+  padding: 12px 0 8px 0;
+}
+
+.postIconRow--withCover {
+  margin-top: -44px;
+  padding: 0 0 8px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.postIconEmoji {
+  font-size: 72px;
+  line-height: 1;
+}
+
+.postIconImg {
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.postCoverImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom; 
+  display: block;
+}

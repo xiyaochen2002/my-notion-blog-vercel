@@ -280,23 +280,41 @@ export default async function PostPage({
   const content = (
     <article className="postCard">
       <header className="postHeader">
-        <p className="postEyebrow">Writing</p>
-        <h1 className="postTitle">{post.title}</h1>
-        <div className="postMetaRow">
-          {post.date ? <span>{post.date}</span> : null}
-          {post.category ? <span>· {post.category}</span> : null}
-        </div>
-        {post.summary ? <p className="postSummary">{post.summary}</p> : null}
-        {post.tags?.length ? (
-          <div className="postTags">
-            {post.tags.map((tag: string) => (
-              <span key={tag} className="postTag">{tag}</span>
-            ))}
+        {/* 封面大图 */}
+        {post.cover ? (
+          <div className="postCoverHero">
+            <img src={post.cover} alt="" className="postCoverImg" />
+            <div className="postCoverOverlay" />
           </div>
         ) : null}
-        {post.cover ? (
-          <img className="postCover" src={post.cover} alt={post.title} />
+
+        {/* Icon：悬浮在封面图底部边缘 */}
+        {post.icon ? (
+          <div className={`postIconRow${post.cover ? " postIconRow--withCover" : ""}`}>
+            {post.icon.type === "emoji" ? (
+              <span className="postIconEmoji">{post.icon.value}</span>
+            ) : (
+              <img className="postIconImg" src={post.icon.value} alt="icon" />
+            )}
+          </div>
         ) : null}
+
+        <div className="postHeaderMeta">
+          <p className="postEyebrow">Writing</p>
+          <h1 className="postTitle">{post.title}</h1>
+          <div className="postMetaRow">
+            {post.date ? <span>{post.date}</span> : null}
+            {post.category ? <span>· {post.category}</span> : null}
+          </div>
+          {post.summary ? <p className="postSummary">{post.summary}</p> : null}
+          {post.tags?.length ? (
+            <div className="postTags">
+              {post.tags.map((tag: string) => (
+                <span key={tag} className="postTag">{tag}</span>
+              ))}
+            </div>
+          ) : null}
+        </div>
       </header>
 
       <section className="postContent">
