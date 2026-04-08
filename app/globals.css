@@ -2,7 +2,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Honk&display=swap');
 
-
 :root {
   --bg: #f8fafc;
   --text: #0f172a;
@@ -921,4 +920,58 @@ code {
 .sectionTitle {
   font-family: 'Honk', cursive;
   font-size: 4rem;
+}
+.notionCallout {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: var(--color-background-secondary);
+  margin: 0.5rem 0;
+}
+
+.notionTodo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.notionFile, .notionBookmark {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--color-border-primary);
+  border-radius: 6px;
+  margin: 0.25rem 0;
+  text-decoration: none;
+}
+
+.notionGithubCard {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border-primary);
+  border-radius: 8px;
+  text-decoration: none;
+  margin: 0.5rem 0;
+}
+
+.notionTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.notionTable td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-border-primary);
+}
+
+.notionColumns {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.notionColumn {
+  flex: 1;
 }
