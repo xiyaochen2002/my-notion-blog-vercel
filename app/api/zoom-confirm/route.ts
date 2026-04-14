@@ -3,7 +3,6 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// 1. 处理 GET 请求：展示管理表单
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
