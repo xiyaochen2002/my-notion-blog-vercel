@@ -345,7 +345,7 @@ export default function ZoomBooking({ onClose }: Props) {
                     name="date"
                     value={form.date}
                     onChange={handleChange}
-                    placeholder="e.g. Wednesday, April 15, 2026, 1:00-3:00 PM, China (GMT+8)"
+                    placeholder="e.g. April 15 afternoon 2026, April 17 2026 China (GMT+8),"
                   />
                 </div>
 

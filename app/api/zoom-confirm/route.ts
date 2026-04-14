@@ -3,81 +3,93 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// 1. 处理 GET 请求：展示管理表单
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const token = searchParams.get("token");
-    const secret = searchParams.get("secret");
-    const zoomType = searchParams.get("zoomType");
-    const customZoomLink = searchParams.get("zoomLink");
 
-    if (secret !== process.env.CONFIRM_SECRET) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-
-    if (!token) {
-      return new NextResponse("Missing token", { status: 400 });
-    }
+    if (!token) return new NextResponse("Missing token", { status: 400 });
 
     const { name, email, date, topic } = JSON.parse(
       Buffer.from(token, "base64url").toString("utf-8")
     );
 
-    const zoomLink = zoomType === "personal" 
-      ? process.env.MY_ZOOM_PERSONAL_LINK! 
-      : customZoomLink || process.env.MY_ZOOM_PERSONAL_LINK!;
-
-    // Send confirmation email to the VISITOR
-    await resend.emails.send({
-      from: "Xiyao Chen <meeting@xiyaochen.cn>",
-      to: email,
-      subject: `Confirmed: Zoom Meeting with Xiyao Chen`,
-      html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #16a34a;">Meeting Confirmed</h2>
-          <p>Hi ${name},</p>
-          <p>Our Zoom meeting has been scheduled. Here are the details:</p>
-          
-          <div style="background: #f3f4f6; padding: 20px; border-radius: 12px; margin: 20px 0;">
-            <p style="margin: 0;"><strong>Topic:</strong> ${topic}</p>
-            <p style="margin: 8px 0;"><strong>Time:</strong> ${date}</p>
-            <p style="margin: 8px 0 0;"><strong>Zoom Link:</strong> <a href="${zoomLink}">${zoomLink}</a></p>
-          </div>
-
-          <p>Looking forward to meeting you!</p>
-          <p style="color: #333;">Best regards,<br/><strong>Xiyao Chen</strong></p>
-        </div>
-      `,
-    });
-
-    // Return success page to YOU
     return new NextResponse(
       `<!DOCTYPE html>
       <html lang="en">
       <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Booking Confirmed</title>
+        <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Confirm Booking - ${name}</title>
         <style>
-          body { font-family: -apple-system, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #000; color: #fff; }
-          .card { background: #111; border: 1px solid #333; border-radius: 20px; padding: 48px; text-align: center; max-width: 400px; }
-          h1 { color: #22c55e; margin: 0 0 16px; font-size: 24px; }
-          p { color: #888; line-height: 1.5; }
-          .btn { display: inline-block; margin-top: 32px; padding: 12px 24px; background: #fff; color: #000; border-radius: 10px; text-decoration: none; font-weight: bold; }
+          body { font-family: -apple-system, sans-serif; background: #000; color: #fff; display: flex; justify-content: center; padding: 40px 20px; }
+          .card { background: #111; border: 1px solid #333; border-radius: 20px; padding: 30px; width: 100%; max-width: 500px; }
+          .info { color: #888; margin-bottom: 24px; font-size: 0.9rem; line-height: 1.6; border-left: 2px solid #333; padding-left: 15px; }
+          label { font-size: 12px; color: #555; text-transform: uppercase; font-weight: bold; margin-bottom: 8px; display: block; }
+          input, textarea { width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 12px; color: #fff; margin-bottom: 20px; font-family: inherit; }
+          .btn { width: 100%; background: #fff; color: #000; border: none; padding: 14px; border-radius: 10px; font-weight: bold; cursor: pointer; }
         </style>
       </head>
       <body>
         <div class="card">
-          <h1>Confirmed!</h1>
-          <p>The confirmation email with the Zoom link has been sent to <strong>${name}</strong> (${email}).</p>
-          <a href="/" class="btn">Back to Home</a>
+          <h2 style="margin-top:0">Finalize Meeting</h2>
+          <div class="info"><strong>From:</strong> ${name}<br/><strong>Topic:</strong> ${topic}<br/><strong>Proposed:</strong> ${date}</div>
+          <form action="/api/zoom-confirm" method="POST">
+            <input type="hidden" name="name" value="${name}" />
+            <input type="hidden" name="email" value="${email}" />
+            <input type="hidden" name="topic" value="${topic}" />
+            <label>Confirm Final Time</label>
+            <input type="text" name="finalTime" value="${date}" required />
+            <label>Your Message to ${name}</label>
+            <textarea name="personalNote" rows="4" placeholder="Add a personal note..."></textarea>
+            <button type="submit" class="btn">Confirm & Send Email</button>
+          </form>
         </div>
       </body>
       </html>`,
       { headers: { "Content-Type": "text/html" } }
     );
   } catch (err) {
-    console.error(err);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return new NextResponse("Invalid Token", { status: 400 });
+  }
+}
+
+// 2. 处理 POST 请求：执行发送邮件
+export async function POST(req: NextRequest) {
+  try {
+    const formData = await req.formData();
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const topic = formData.get("topic") as string;
+    const finalTime = formData.get("finalTime") as string;
+    const personalNote = formData.get("personalNote") as string;
+
+    await resend.emails.send({
+      from: "Xiyao Chen <meeting@xiyaochen.cn>",
+      to: email,
+      subject: `Confirmed: Meeting with Xiyao Chen`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; line-height: 1.6; color: #333;">
+          <h2>Meeting Confirmed</h2>
+          <p>Hi ${name},</p>
+          <p>${personalNote || "I've confirmed our meeting. Looking forward to our discussion!"}</p>
+          <div style="background: #f9f9f9; padding: 20px; border-radius: 12px; margin: 20px 0; border: 1px solid #eee;">
+            <p style="margin:0"><strong>Topic:</strong> ${topic}</p>
+            <p style="margin:8px 0"><strong>Time:</strong> ${finalTime}</p>
+            <p style="margin:0"><strong>Zoom:</strong> <a href="${process.env.MY_ZOOM_PERSONAL_LINK}">${process.env.MY_ZOOM_PERSONAL_LINK}</a></p>
+          </div>
+          <p>Best regards,<br/><strong>Xiyao Chen</strong></p>
+        </div>
+      `,
+    });
+
+    return new NextResponse(
+      `<html><body style="background:#000;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif;">
+        <div style="text-align:center;"><h1 style="color:#22c55e;">Done!</h1><p>Confirmation sent to ${name}.</p><a href="/" style="color:#666;text-decoration:none;">Back to Home</a></div>
+      </body></html>`,
+      { headers: { "Content-Type": "text/html" } }
+    );
+  } catch (err) {
+    return new NextResponse("Error sending email", { status: 500 });
   }
 }
