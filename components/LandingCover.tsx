@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import {
-  Feather, Code2, FileText, MapPinned, NotebookText, Mail,
+  Feather, Code2, FileText, MapPinned, NotebookText, Mail, Video,
 } from "lucide-react";
+import ZoomBooking from "./ZoomBooking";
 
 function GitHubIcon({ size = 18 }: { size?: number }) {
   return (
@@ -14,6 +16,8 @@ function GitHubIcon({ size = 18 }: { size?: number }) {
 }
 
 export default function LandingCover() {
+  const [showZoom, setShowZoom] = useState(false);
+
   return (
     <section className="landingCover">
       <div className="landingGrid" />
@@ -21,7 +25,7 @@ export default function LandingCover() {
 
       <div className="landingInner">
         <div className="landingAvatarWrap">
-          <img src="/avatar.jpg" alt="avatar" className="landingAvatar" />
+          <img src="/avatar.jpg" alt="Avatar" className="landingAvatar" />
         </div>
 
         <h1 className="landingSignature">Xiyao Chen</h1>
@@ -31,35 +35,25 @@ export default function LandingCover() {
         </p>
 
         <nav className="landingNav">
-          <Link href="/blog" className="landingNavItem">
-            <Feather size={30} /><span>Blog</span>
-          </Link>
-          <Link href="/projects" className="landingNavItem">
-            <Code2 size={30} /><span>Projects</span>
-          </Link>
-          <Link href="/resume" className="landingNavItem">
-            <FileText size={30} /><span>Resume</span>
-          </Link>
-          <Link href="/travel" className="landingNavItem">
-            <MapPinned size={30} /><span>Travel</span>
-          </Link>
-          <Link href="/notes" className="landingNavItem">
-            <NotebookText size={30} /><span>Notes</span>
-          </Link>
+          <Link href="/blog" className="landingNavItem"><Feather size={30} /><span>Blog</span></Link>
+          <Link href="/projects" className="landingNavItem"><Code2 size={30} /><span>Projects</span></Link>
+          <Link href="/resume" className="landingNavItem"><FileText size={30} /><span>Resume</span></Link>
+          <Link href="/travel" className="landingNavItem"><MapPinned size={30} /><span>Travel</span></Link>
+          <Link href="/notes" className="landingNavItem"><NotebookText size={30} /><span>Notes</span></Link>
         </nav>
       </div>
 
-      {}
       <div className="landingFooter">
         <div className="landingContact">
-          <a href="mailto:xiyaochen2002@gmail.com">
-            <Mail size={40} />
-          </a>
-          <a href="https://github.com/xiyaochen2002/" target="_blank" rel="noreferrer">
-            <GitHubIcon size={40} />
-          </a>
+          <a href="mailto:xiyaochen2002@gmail.com" aria-label="Email"><Mail size={40} /></a>
+          <a href="https://github.com/xiyaochen2002/" target="_blank" rel="noreferrer" aria-label="GitHub"><GitHubIcon size={40} /></a>
+          <button className="landingContactBtn" onClick={() => setShowZoom(true)} aria-label="Schedule Zoom">
+            <Video size={40} />
+          </button>
         </div>
       </div>
+
+      {showZoom && <ZoomBooking onClose={() => setShowZoom(false)} />}
     </section>
   );
 }
