@@ -36,6 +36,7 @@ export default async function HomePage() {
                       src={post.cover}
                       alt={post.title}
                       className="sectionCardCover"
+                      loading="lazy"
                     />
                   ) : null}
 

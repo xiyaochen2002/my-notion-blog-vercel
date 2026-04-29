@@ -832,6 +832,17 @@ code {
   margin-bottom: 1rem;
 }
 
+.postPasswordQuestion {
+  color: #2f2a26;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin-bottom: 1.2rem;
+  padding: 0.9rem 1rem;
+  background: #efe4d8;
+  border-radius: 12px;
+  border-left: 3px solid #8a6a54;
+}
+
 .postPasswordForm {
   display: flex;
   gap: 0.8rem;
@@ -873,6 +884,7 @@ code {
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
+  z-index: 3;
 }
 
 
@@ -980,17 +992,15 @@ code {
 .postCoverHero {
   position: relative;
   width: 100%;
-  height: 280px;
-  overflow: hidden;
   border-radius: 12px 12px 0 0;
   margin-bottom: 0;
 }
 
 .postCoverImg {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
   display: block;
+  border-radius: 12px 12px 0 0;
 }
 
 .postCoverOverlay {
@@ -1024,14 +1034,6 @@ code {
   object-fit: cover;
 }
 
-.postCoverImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center bottom; 
-  display: block;
-}
-
 .landingContact {
   display: flex;
   align-items: center;
@@ -1045,14 +1047,18 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
+  padding: 6px;
   margin: 0;
   background: none;
   border: none;
   cursor: pointer;
-  color: #a1a1aa; /* 默认图标颜色 */
+  color: #a1a1aa;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
+  min-width: 44px;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 /* 悬停时的统一动效：颜色变亮 + 向上浮动 */
@@ -1076,17 +1082,21 @@ code {
   margin-top: 2rem;
 }
 
-.landingContact a, 
+.landingContact a,
 .landingContactBtn {
   background: none;
   border: none;
-  padding: 0;
+  padding: 6px;
   cursor: pointer;
-  color: #a1a1aa; /* 默认灰色 */
+  color: #a1a1aa;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .landingContact a:hover, 
@@ -1273,4 +1283,119 @@ code {
 .zoomSpinner { animation: spin 1s linear infinite; }
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* Gallery masonry layout */
+.galleryGrid {
+  columns: 3;
+  column-gap: 1rem;
+}
+
+.galleryItem {
+  display: block;
+  break-inside: avoid;
+  margin-bottom: 1rem;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.galleryItemImg {
+  width: 100%;
+  display: block;
+  border-radius: 20px;
+  transition: transform 0.45s ease;
+}
+
+.galleryItem:hover .galleryItemImg {
+  transform: scale(1.04);
+}
+
+.galleryItemOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.68) 0%, transparent 55%);
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: flex-end;
+  padding: 1.1rem 1.2rem;
+  border-radius: 20px;
+}
+
+.galleryItem:hover .galleryItemOverlay {
+  opacity: 1;
+}
+
+.galleryItemMeta {
+  color: white;
+}
+
+.galleryItemDate {
+  font-size: 0.78rem;
+  opacity: 0.72;
+  display: block;
+  margin-bottom: 0.2rem;
+  letter-spacing: 0.04em;
+}
+
+.galleryItemTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: white;
+}
+
+.galleryItemText {
+  padding: 1.5rem;
+  background: rgba(255, 252, 248, 0.86);
+  border: 1px solid rgba(120, 104, 91, 0.14);
+  border-radius: 20px;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.galleryItem:hover .galleryItemText {
+  background: rgba(255, 252, 248, 1);
+}
+
+.galleryItemDateDark {
+  font-size: 0.78rem;
+  color: #8a7b70;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.4rem;
+}
+
+.galleryItemTitleDark {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2f2a26;
+  line-height: 1.35;
+}
+
+.galleryItemSummary {
+  color: #7b6f66;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+@media (max-width: 900px) {
+  .galleryGrid {
+    columns: 2;
+  }
+}
+
+@media (max-width: 480px) {
+  .galleryGrid {
+    columns: 1;
+  }
+}
 

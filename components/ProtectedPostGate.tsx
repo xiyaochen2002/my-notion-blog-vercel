@@ -4,11 +4,13 @@ import { useState } from "react";
 
 type ProtectedPostGateProps = {
   slug: string;
+  question?: string;
   children: React.ReactNode;
 };
 
 export default function ProtectedPostGate({
   slug,
+  question,
   children,
 }: ProtectedPostGateProps) {
   const [password, setPassword] = useState("");
@@ -44,17 +46,19 @@ export default function ProtectedPostGate({
     <section className="postPasswordGate">
       <div className="postPasswordCard">
         <p className="postEyebrow">Protected Post</p>
-        <h2>Enter Password</h2>
-        <p className="postPasswordHint">
-          This post is protected. Enter the password to continue.
-        </p>
+        <h2>A little question</h2>
+        {question ? (
+          <p className="postPasswordQuestion">{question}</p>
+        ) : (
+          <p className="postPasswordHint">Answer correctly to unlock this post.</p>
+        )}
 
         <form onSubmit={handleSubmit} className="postPasswordForm">
           <input
-            type="password"
+            type="text"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
+            placeholder="Your answer"
             className="postPasswordInput"
           />
           <button type="submit" className="postPasswordButton">

@@ -4,7 +4,7 @@ import SectionPage from "../../components/SectionPage";
 export const revalidate = 60;
 
 export default async function NotesPage() {
-  const posts = await getPostsBySection("Notes");
+  const posts = await getPostsBySection("Writing");
 
   return (
     <SectionPage

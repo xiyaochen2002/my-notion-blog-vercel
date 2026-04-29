@@ -17,8 +17,8 @@ export default function PageHeader({ title, subtitle }: PageHeaderProps) {
           <Link href="/blog">Blog</Link>
           <Link href="/projects">Projects</Link>
           <Link href="/resume">Resume</Link>
-          <Link href="/travel">Travel</Link>
-          <Link href="/notes">Notes</Link>
+          <Link href="/gallery">Gallery</Link>
+          <Link href="/writing">Writing</Link>
         </nav>
       </div>
 

@@ -42,6 +42,7 @@ export default function SectionPage({
                     src={post.cover}
                     alt={post.title}
                     className="sectionCardCover"
+                    loading="lazy"
                   />
                 ) : null}
 

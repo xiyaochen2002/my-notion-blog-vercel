@@ -14,6 +14,12 @@ export default function RootLayout({
     <html lang="zh-CN">
       <head>
         <link
+          rel="preload"
+          as="image"
+          href="/home-bg.jpg"
+          fetchPriority="high"
+        />
+        <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
           crossOrigin="anonymous"

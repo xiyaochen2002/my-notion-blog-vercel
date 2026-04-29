@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import {
-  Feather, Code2, FileText, MapPinned, NotebookText, Mail, Video,
+  Feather, Code2, FileText, Images, PenLine, Mail, Video,
 } from "lucide-react";
 import ZoomBooking from "./ZoomBooking";
 
@@ -25,7 +25,7 @@ export default function LandingCover() {
 
       <div className="landingInner">
         <div className="landingAvatarWrap">
-          <img src="/avatar.jpg" alt="Avatar" className="landingAvatar" />
+          <img src="/avatar.jpg" alt="Avatar" className="landingAvatar" fetchPriority="high" />
         </div>
 
         <h1 className="landingSignature">Xiyao Chen</h1>
@@ -38,8 +38,8 @@ export default function LandingCover() {
           <Link href="/blog" className="landingNavItem"><Feather size={30} /><span>Blog</span></Link>
           <Link href="/projects" className="landingNavItem"><Code2 size={30} /><span>Projects</span></Link>
           <Link href="/resume" className="landingNavItem"><FileText size={30} /><span>Resume</span></Link>
-          <Link href="/travel" className="landingNavItem"><MapPinned size={30} /><span>Travel</span></Link>
-          <Link href="/notes" className="landingNavItem"><NotebookText size={30} /><span>Notes</span></Link>
+          <Link href="/gallery" className="landingNavItem"><Images size={30} /><span>Gallery</span></Link>
+          <Link href="/writing" className="landingNavItem"><PenLine size={30} /><span>Writing</span></Link>
         </nav>
       </div>
 

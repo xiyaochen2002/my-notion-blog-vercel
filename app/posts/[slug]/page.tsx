@@ -300,7 +300,7 @@ export default async function PostPage({
         ) : null}
 
         <div className="postHeaderMeta">
-          <p className="postEyebrow">Writing</p>
+          <p className="postEyebrow">{post.section || "Post"}</p>
           <h1 className="postTitle">{post.title}</h1>
           <div className="postMetaRow">
             {post.date ? <span>{post.date}</span> : null}
@@ -341,13 +341,13 @@ export default async function PostPage({
           <Link href="/blog">Blog</Link>
           <Link href="/projects">Projects</Link>
           <Link href="/resume">Resume</Link>
-          <Link href="/travel">Travel</Link>
-          <Link href="/notes">Notes</Link>
+          <Link href="/gallery">Gallery</Link>
+          <Link href="/writing">Writing</Link>
         </nav>
       </section>
 
       {post.protected ? (
-        <ProtectedPostGate slug={slug}>{content}</ProtectedPostGate>
+        <ProtectedPostGate slug={slug} question={post.question}>{content}</ProtectedPostGate>
       ) : (
         content
       )}
