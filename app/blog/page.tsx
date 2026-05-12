@@ -9,7 +9,7 @@ export default async function BlogPage() {
   return (
     <SectionPage
       title="Blog"
-      subtitle="Longer writing, personal essays, and the things I want to keep."
+      subtitle="Technical notes, travel stories, and everything in between."
       posts={posts}
     />
   );

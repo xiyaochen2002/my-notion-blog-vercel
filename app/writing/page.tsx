@@ -9,7 +9,7 @@ export default async function WritingPage() {
   return (
     <SectionPage
       title="Writing"
-      subtitle="Math notes, code notes, learning records, and structured drafts."
+      subtitle="Fragments of thought — journals, reflections, and things I felt like writing down."
       posts={posts}
     />
   );
